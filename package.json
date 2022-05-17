@@ -1,6 +1,6 @@
 {
   "name": "threejs-compass",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "dist/threejs-compass.js",
   "typings": "dist/threejs-compass.d.ts",
@@ -11,8 +11,18 @@
     "build": "webpack",
     "dev": "webpack serve --config ./webpack.config.js"
   },
-  "keywords": ["three.js", "zoom", "compass", "pan", "drag"],
-  "author": "simCecca - https://github.com/simCecca",
+  "keywords": [
+    "three.js",
+    "zoom",
+    "compass",
+    "pan",
+    "drag"
+  ],
+  "author": "simCecca",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simCecca"
+  },
   "license": "ISC",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.17.0",
