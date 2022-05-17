@@ -1,4 +1,9 @@
-import { CanvasBox } from "./interfaces.config";
+export interface CanvasBox {
+  minWidth: number;
+  maxWidth: number;
+  minHeight: number;
+  maxHeight: number;
+}
 
 class Compass {
   private camera: THREE.PerspectiveCamera;

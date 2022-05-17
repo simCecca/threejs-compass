@@ -1,12 +1,15 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+
 const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.ts",
+  entry: "./src/threejs-compass.ts",
   output: {
-    filename: "index.js",
+    filename: "threejs-compass.js",
     path: path.resolve(__dirname, "dist"),
+    libraryTarget : 'commonjs2'
   },
   module: {
     rules: [
@@ -37,5 +40,8 @@ module.exports = {
     hot: true,
     port: 9999,
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
+  plugins: [
+    // new HtmlWebpackPlugin({ template: "./src/index.html" }),
+   
+  ],
 };
