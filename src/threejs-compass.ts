@@ -22,6 +22,7 @@ class Compass {
       step: 0.06,
     };
     this.draggingObj = { isItDragging: false, positions: { x: 0, y: 0 } };
+    this.disableBrowserCTXMenu();
   }
 
   /**
@@ -145,7 +146,21 @@ class Compass {
   setAllEvents = () => {
     this.setZoomHandler();
     this.setDragCanvas();
-    this.disableBrowserCTXMenu();
+  };
+
+  removeAllEvents = () => {
+    this.removeZoomEvent();
+    this.removeDragCanvas();
+  };
+
+  removeZoomEvent = () => {
+    this.renderer.domElement.removeEventListener("wheel", this.zoomHandler);
+  };
+
+  removeDragCanvas = () => {
+    this.renderer.domElement.removeEventListener("mousedown", this.mouseDown);
+    window.removeEventListener("mousemove", this.mouseMove);
+    this.renderer.domElement.removeEventListener("mouseup", this.mouseUp);
   };
 
   disableBrowserCTXMenu = () => {
@@ -155,37 +170,45 @@ class Compass {
   };
 
   setDragCanvas = () => {
-    this.renderer.domElement.onmousedown = (event) => {
-      const { clientX, clientY } = event;
-      this.draggingObj.isItDragging = true;
-      const { x, y } = this.getWorldToCanvasABSCoordinates(clientX, clientY);
-      this.draggingObj.positions = { x, y };
-    };
-    window.onmousemove = (event) => {
-      if (this.draggingObj.isItDragging) {
-        const { clientX, clientY } = event;
-        const { x, y } = this.draggingObj.positions;
-        const { x: newX, y: newY } = this.getWorldToCanvasABSCoordinates(
-          clientX,
-          clientY
-        );
-        this.draggingObj.positions = { x: newX, y: newY };
-        this.camera.translateX(x - newX);
-        this.camera.translateY(y - newY);
-      }
-    };
-    this.renderer.domElement.onmouseup = (event) => {
-      this.draggingObj.isItDragging = false;
-    };
+    this.renderer.domElement.onmousedown = this.mouseDown;
+    window.onmousemove = this.mouseMove;
+    this.renderer.domElement.onmouseup = this.mouseUp;
   };
 
   setZoomHandler = () => {
-    this.renderer.domElement.onwheel = (event: WheelEvent) => {
-      event.preventDefault();
-      if (!this.draggingObj.isItDragging) {
-        this.zoom(event);
-      }
-    };
+    this.renderer.domElement.addEventListener("wheel", this.zoomHandler);
+  };
+
+  private zoomHandler = (event: WheelEvent) => {
+    event.preventDefault();
+    if (!this.draggingObj.isItDragging) {
+      this.zoom(event);
+    }
+  };
+
+  private mouseDown = (event) => {
+    const { clientX, clientY } = event;
+    this.draggingObj.isItDragging = true;
+    const { x, y } = this.getWorldToCanvasABSCoordinates(clientX, clientY);
+    this.draggingObj.positions = { x, y };
+  };
+
+  private mouseMove = (event) => {
+    if (this.draggingObj.isItDragging) {
+      const { clientX, clientY } = event;
+      const { x, y } = this.draggingObj.positions;
+      const { x: newX, y: newY } = this.getWorldToCanvasABSCoordinates(
+        clientX,
+        clientY
+      );
+      this.draggingObj.positions = { x: newX, y: newY };
+      this.camera.translateX(x - newX);
+      this.camera.translateY(y - newY);
+    }
+  };
+
+  private mouseUp = (event) => {
+    this.draggingObj.isItDragging = false;
   };
 
   private getWorldToCanvasWithCustomZ = (
