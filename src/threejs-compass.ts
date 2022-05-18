@@ -116,7 +116,43 @@ class Compass {
 
   // end from world to something
 
-  zoom = (event: WheelEvent) => {
+  setAllEvents = () => {
+    this.setZoomHandler();
+    this.setDragCanvas();
+  };
+
+  removeAllEvents = () => {
+    this.removeZoomEvent();
+    this.removeDragCanvas();
+  };
+
+  removeZoomEvent = () => {
+    this.renderer.domElement.removeEventListener("wheel", this.zoomHandler);
+  };
+
+  removeDragCanvas = () => {
+    this.renderer.domElement.removeEventListener("mousedown", this.mouseDown);
+    window.removeEventListener("mousemove", this.mouseMove);
+    this.renderer.domElement.removeEventListener("mouseup", this.mouseUp);
+  };
+
+  setDragCanvas = () => {
+    this.renderer.domElement.onmousedown = this.mouseDown;
+    window.onmousemove = this.mouseMove;
+    this.renderer.domElement.onmouseup = this.mouseUp;
+  };
+
+  setZoomHandler = () => {
+    this.renderer.domElement.addEventListener("wheel", this.zoomHandler);
+  };
+
+  private disableBrowserCTXMenu = () => {
+    this.renderer.domElement.addEventListener("contextmenu", (e) =>
+      e.preventDefault()
+    );
+  };
+
+  private zoom = (event: WheelEvent) => {
     const { clientX, clientY, deltaY } = event;
     const { step, minZoom, maxZoom } = this.zoomOptions;
 
@@ -141,42 +177,6 @@ class Compass {
     this.camera.translateX(offX);
     this.camera.translateY(offY);
     this.camera.position.setZ(nz);
-  };
-
-  setAllEvents = () => {
-    this.setZoomHandler();
-    this.setDragCanvas();
-  };
-
-  removeAllEvents = () => {
-    this.removeZoomEvent();
-    this.removeDragCanvas();
-  };
-
-  removeZoomEvent = () => {
-    this.renderer.domElement.removeEventListener("wheel", this.zoomHandler);
-  };
-
-  removeDragCanvas = () => {
-    this.renderer.domElement.removeEventListener("mousedown", this.mouseDown);
-    window.removeEventListener("mousemove", this.mouseMove);
-    this.renderer.domElement.removeEventListener("mouseup", this.mouseUp);
-  };
-
-  disableBrowserCTXMenu = () => {
-    this.renderer.domElement.addEventListener("contextmenu", (e) =>
-      e.preventDefault()
-    );
-  };
-
-  setDragCanvas = () => {
-    this.renderer.domElement.onmousedown = this.mouseDown;
-    window.onmousemove = this.mouseMove;
-    this.renderer.domElement.onmouseup = this.mouseUp;
-  };
-
-  setZoomHandler = () => {
-    this.renderer.domElement.addEventListener("wheel", this.zoomHandler);
   };
 
   private zoomHandler = (event: WheelEvent) => {
