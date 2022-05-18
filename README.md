@@ -7,6 +7,8 @@ This is a Simple project created and maintained with the **just for fun** philos
 
 # Usage
 
+See the wiki section for a little documentation
+
 Install the library
 ```
 npm install threejs-compass
