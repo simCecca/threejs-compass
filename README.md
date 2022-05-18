@@ -3,6 +3,7 @@ This is a Simple project created and maintained with the **just for fun** philos
 # With this package you can
 * zoom in your visualization in a specific point, using the pointer and the wheel (like google maps)
 * drag the visualization (like google maps)
+* translate the coordinates in 3 different spaces: the world, the real space of the canvas and the relative space of the canvas
 
 # Usage
 
